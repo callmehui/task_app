@@ -1,0 +1,88 @@
+# task_manage_app ignore files
+/task_manage_app/.DS_Store
+/task_manage_app/node_modules
+/task_manage_app/dist
+
+# local env files
+/task_manage_app/.env.local
+/task_manage_app/.env.*.local
+
+# Log files
+/task_manage_app/npm-debug.log*
+/task_manage_app/yarn-debug.log*
+/task_manage_app/yarn-error.log*
+/task_manage_app/pnpm-debug.log*
+
+# Editor directories and files
+/task_manage_app/.idea
+/task_manage_app/.vscode
+/task_manage_app/*.suo
+/task_manage_app/*.ntvs*
+/task_manage_app/*.njsproj
+/task_manage_app/*.sln
+/task_manage_app/*.sw?
+
+
+# task_server ignore files
+/task_server/logs/
+/task_server/npm-debug.log
+/task_server/yarn-error.log
+/task_server/node_modules/
+/task_server/package-lock.json
+/task_server/yarn.lock
+/task_server/coverage/
+/task_server/.idea/
+r/task_server/un/
+/task_server/.DS_Store
+/task_server/*.sw*
+/task_server/*.un~
+/task_server/typings/
+/task_server/.nyc_output/
+
+# task_square_app ignore files
+/task_square_app/.DS_Store
+/task_square_app/node_modules
+/task_square_app/dist
+
+# local env files
+/task_square_app/.env.local
+/task_square_app/.env.*.local
+
+# Log files
+/task_square_app/npm-debug.log*
+/task_square_app/yarn-debug.log*
+/task_square_app/yarn-error.log*
+/task_square_app/pnpm-debug.log*
+
+# Editor directories and files
+/task_square_app/.idea
+/task_square_app/.vscode
+/task_square_app/*.suo
+/task_square_app/*.ntvs*
+/task_square_app/*.njsproj
+/task_square_app/*.sln
+/task_square_app/*.sw?
+
+# task_user_app ignore files
+/task_user_app/.DS_Store
+/task_user_app/node_modules
+/task_user_app/dist
+
+# local env files
+/task_user_app/.env.local
+/task_user_app/.env.*.local
+
+# Log files
+/task_user_app/npm-debug.log*
+/task_user_app/yarn-debug.log*
+/task_user_app/yarn-error.log*
+/task_user_app/pnpm-debug.log*
+
+# Editor directories and files
+/task_user_app/.idea
+/task_user_app/.vscode
+/task_user_app/*.suo
+/task_user_app/*.ntvs*
+/task_user_app/*.njsproj
+/task_user_app/*.sln
+/task_user_app/*.sw?
