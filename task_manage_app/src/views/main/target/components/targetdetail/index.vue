@@ -1,8 +1,6 @@
 <template>
   <div>
-    <!-- 筛选器 -->
-    <!-- 任务列表 -->
-    <!-- 分页 -->
+    目标详情
   </div>
 </template>
 
@@ -10,7 +8,6 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "target-list",
   setup() {
     return {};
   },

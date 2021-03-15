@@ -54,6 +54,7 @@ export const validateTimingUnit = (formRef: any) => {
     callback: (error: string | string[] | void | Error) => void
   ) => {
     formRef.value?.validateField("timingValue");
+    callback();
   };
 };
 
@@ -68,7 +69,6 @@ export const validateCompletionValue = (
   value: any,
   callback: (error: string | string[] | void | Error) => void
 ) => {
-  console.log("value", value);
   if (!value) {
     callback(new Error("请输入达成情况百分比数字"));
   } else if (value > 100 || value < 0) {
@@ -89,10 +89,9 @@ export const validateModifyTime = (
   value: any,
   callback: (error: string | string[] | void | Error) => void
 ) => {
-  console.log("value", value);
   if (!value) {
     callback(new Error("请输入可修改次数"));
-  } else if (value > 100) {
+  } else if (value > 10) {
     callback(new Error("可修改次数不得超过10次"));
   } else if (value < 0) {
     callback(new Error("可修改次数不得小于0"));

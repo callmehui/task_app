@@ -12,7 +12,10 @@ const apis = {
   register: baseUrl + "/checkRegister",
   /** 登录页面 */
   login: baseUrl + "/checkLogin",
+  /** 获取当前用户基本信息 */
   getUserInfo: baseUrl + "/getUserInfo",
+  /** 创建目标 */
+  createTarget: baseUrl + "/createTarget",
 };
 
 export { apis, serverUrl, imgServerUrl };

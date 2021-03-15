@@ -16,17 +16,16 @@
         class="form"
         ref="formRef"
         :model="targetfForm"
-        :rules="formRules"
         label-position="right"
         label-width="120px"
       >
-        <el-form-item label="目标名称" prop="name">
+        <el-form-item label="目标名称" prop="name" :rules="formRules.name">
           <el-input
             v-model="targetfForm.name"
             placeholder="请输入目标的简短描述(15字以内)"
           />
         </el-form-item>
-        <el-form-item label="目标描述" prop="desc">
+        <el-form-item label="目标描述" prop="desc" :rules="formRules.desc">
           <el-input
             type="textarea"
             :autosize="{ minRows: 4 }"
@@ -41,7 +40,7 @@
         </el-form-item>
         <el-form-item label="目标时限" required>
           <div class="timing-wrap">
-            <el-form-item prop="timingValue">
+            <el-form-item prop="timingValue" :rules="formRules.timingValue">
               <el-input
                 class="timing-value"
                 v-model="targetfForm.timingValue"
@@ -49,7 +48,7 @@
                 placeholder="请输入完成目标的最长时间"
               />
             </el-form-item>
-            <el-form-item prop="timingUnit">
+            <el-form-item prop="timingUnit" :rules="formRules.timingUnit">
               <el-select
                 class="timing-unit"
                 v-model="targetfForm.timingUnit"
@@ -67,7 +66,7 @@
           </div>
         </el-form-item>
         <el-form-item class="completions-container" label="达成情况" required>
-          <template
+          <div
             class="completions-container"
             v-for="(completion, index) in targetfForm.completions"
             :key="index"
@@ -111,16 +110,26 @@
                 />
               </el-form-item>
             </div>
-          </template>
+          </div>
         </el-form-item>
-        <el-form-item label="可修改次数" prop="modifyTime" required>
+        <el-form-item
+          label="可修改次数"
+          prop="modifyTime"
+          :rules="formRules.modifyTime"
+          required
+        >
           <el-input
             v-model="targetfForm.modifyTime"
             placeholder="请输入可修改目标次数(不得超过10)"
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">提交</el-button>
+          <el-button
+            type="primary"
+            :class="{ 'not-allowed': loading }"
+            @click="handleSubmit"
+            >提交</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -128,7 +137,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref, toRefs } from "vue";
 import { TargetForm, TargetTimingUnit } from "./interface";
 import {
   validateTimingValue,
@@ -137,6 +146,11 @@ import {
 } from "./validator";
 import { completionRules } from "./formRules";
 import Separator from "./components/separator/index.vue";
+import { useStore } from "vuex";
+import { UserInfo } from "../../../login/interface";
+import { apis } from "@/api";
+import { http } from "@/common/js/http";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "new-target",
@@ -144,6 +158,10 @@ export default defineComponent({
     Separator,
   },
   setup() {
+    const store = useStore();
+    const router = useRouter();
+    const userInfo = store.state.user.userInfo as UserInfo;
+
     const timingUnits: TargetTimingUnit[] = [
       { text: "年", value: "year" },
       { text: "月", value: "month" },
@@ -154,8 +172,8 @@ export default defineComponent({
     const formRef = ref<any>(null);
 
     const targetfForm: TargetForm = reactive({
-      name: "",
-      desc: "",
+      name: "测试",
+      desc: "测试描述",
       timingValue: 30,
       timingUnit: "day",
       completions: [
@@ -212,6 +230,8 @@ export default defineComponent({
       timingUnit: [
         { validator: validateTimingUnit(formRef), trigger: "change" },
       ],
+      completions: [],
+
       modifyTime: [
         {
           validator: validateModifyTime,
@@ -229,6 +249,38 @@ export default defineComponent({
       return "reached";
     };
 
+    const formSubmit = reactive({
+      loading: false,
+      handleSubmit: () => {
+        formRef.value.validate(async (valid: boolean) => {
+          if (valid) {
+            if (formSubmit.loading === false) {
+              formSubmit.loading = true;
+              /** 执行存储新目标的逻辑 */
+              const formData = {
+                userId: userInfo.id,
+                name: targetfForm.name,
+                desc: targetfForm.desc,
+                timeValue: targetfForm.timingValue,
+                timeUnit: targetfForm.timingUnit,
+                completions: targetfForm.completions,
+                defaultModifyTime: targetfForm.modifyTime,
+                isShelve: targetfForm.isShelve,
+              };
+              const result = await http({
+                method: "post",
+                url: apis.createTarget,
+                data: formData,
+              });
+              formSubmit.loading = false;
+              console.log("result", result);
+              result && router.push("/target/targetfocus");
+            }
+          }
+        });
+      },
+    });
+
     return {
       formRef,
       targetfForm,
@@ -236,6 +288,7 @@ export default defineComponent({
       completionRules,
       timingUnits,
       transformCompletionType,
+      ...toRefs(formSubmit),
     };
   },
 });
@@ -323,6 +376,14 @@ export default defineComponent({
           flex: 1;
           box-sizing: border-box;
         }
+      }
+    }
+    .not-allowed {
+      cursor: not-allowed;
+      &:active {
+        background: #66b1ff;
+        border-color: #66b1ff;
+        color: #fff;
       }
     }
   }

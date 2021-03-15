@@ -53,7 +53,6 @@ export default {
         method: "get",
         url: `${apis.getUserInfo}/${userId}`,
       });
-      console.log("data", data);
     };
 
     onMounted(() => {

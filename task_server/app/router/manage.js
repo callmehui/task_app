@@ -25,6 +25,13 @@ module.exports = (app) => {
     jwt,
     controller.manage.user.userSetting.getUserInfo
   );
+
+  /** 创建目标 */
+  router.post(
+    "/api/manage/createTarget",
+    controller.manage.target.newTarget.createTarget
+  );
+
   // router.post('/api/admin/checkLogin', controller.admin.login.checkLogin);
   // router.post('/api/admin/novel/addChapter', adminauth, controller.admin.novel.addChapter);
   // router.get('/api/admin/novel/deleteChapterById/:id', adminauth, controller.admin.novel.deleteChapterById);
